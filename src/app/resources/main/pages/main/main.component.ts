@@ -76,14 +76,13 @@ export class MainComponent {
     // -----------------------------------
     // HOJA 1 → REGISTROS
     // -----------------------------------
-    const headers1 = ['Nombre', 'Fecha', 'Cliente', 'Proyecto', 'Tipo', 'Codigo', 'Actividad', 'Total horas'];
+    const headers1 = ['Nombre', 'Fecha', 'Cliente', 'Proyecto', 'Codigo', 'Actividad', 'Total horas'];
 
     const rows1 = this.parsed.map(p => ({
       Nombre: p.nombre,
       Fecha: p.fecha,
       Cliente: p.cliente,
       Proyecto: p.proyecto,
-      Tipo: p.tipo,
       Codigo: p.codigo,
       Actividad: p.actividad,
       "Total horas": p.horas
