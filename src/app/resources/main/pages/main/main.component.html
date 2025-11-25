@@ -1,0 +1,54 @@
+<div class="container">
+  <h1>Importador de tiempos (.txt)</h1>
+
+  <div class="form-row">
+    <label>Cliente</label>
+    <input [(ngModel)]="cliente" placeholder="Nombre del cliente"/>
+    <label>Proyecto</label>
+    <input [(ngModel)]="proyecto" placeholder="Nombre del proyecto"/>
+  </div>
+
+  <div class="form-row">
+    <label>Subir archivo .txt</label>
+    <input type="file" accept=".txt" (change)="onFileSelected($event)"/>
+  </div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="info" class="info">{{ info }}</div>
+
+  <div *ngIf="parsed.length > 0" class="table-wrap">
+    <button (click)="exportExcel()">Exportar CSV</button>
+    <table>
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Fecha</th>
+        <th>Cliente</th>
+        <th>Proyecto</th>
+<!--        <th>Tipo</th>-->
+        <th>Código</th>
+        <th>Actividad</th>
+        <th>Total horas</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let p of parsed">
+        <td>{{ p.nombre }}</td>
+        <td>{{ p.fecha }}</td>
+        <td>{{ p.cliente }}</td>
+        <td>{{ p.proyecto }}</td>
+<!--        <td>{{ p.tipo }}</td>-->
+        <td>{{ p.codigo }}</td>
+        <td>{{ p.actividad }}</td>
+        <td style="text-align: right;">{{ p.horas }}</td>
+      </tr>
+      </tbody>
+      <tfoot>
+      <tr>
+        <td colspan="7" style="text-align: right;"><strong>Total horas</strong></td>
+        <td style="text-align: right;"><strong>{{ totalHours() }}</strong></td>
+      </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>

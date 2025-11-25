@@ -1,0 +1,44 @@
+.container {
+  max-width: 90dvw;
+  margin: 24px auto;
+  padding: 16px;
+  font-family: Arial, sans-serif;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+
+  label { min-width: 90px; }
+  input[type="text"], input[type="file"], input {
+    padding: 6px 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    min-width: 240px;
+  }
+}
+
+.table-wrap {
+  margin-top: 18px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background: #f5f5f5;
+  text-align: left;
+}
+
+.error { color: #a00; margin-top: 8px; }
+.info { color: #006; margin-top: 8px; }
