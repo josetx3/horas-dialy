@@ -1,6 +1,7 @@
 <div class="container">
   <h1>Importador de tiempos </h1>
   <span>Es importante cargar los archivos en un .txt para que funcione bien</span>
+  <br><br>
 
   <div class="form-row">
     <label>Cliente</label>
@@ -27,7 +28,7 @@
         <th>Cliente</th>
         <th>Proyecto</th>
         <!--        <th>Tipo</th>-->
-        <th>Código</th>
+<!--        <th>Código</th>-->
         <th>Actividad</th>
         <th>Total horas</th>
       </tr>
@@ -38,9 +39,7 @@
         <td>{{ p.fecha }}</td>
         <td>{{ p.cliente }}</td>
         <td>{{ p.proyecto }}</td>
-        <!--        <td>{{ p.tipo }}</td>-->
-        <td>{{ p.codigo }}</td>
-        <td>{{ p.actividad }}</td>
+        <td>{{p.codigo}} {{ p.actividad }}</td>
         <td style="text-align: right;">{{ p.horas }}</td>
       </tr>
       </tbody>

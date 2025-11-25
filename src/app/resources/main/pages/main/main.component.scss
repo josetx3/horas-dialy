@@ -1,44 +1,116 @@
-.container {
-  max-width: 90dvw;
-  margin: 24px auto;
-  padding: 16px;
-  font-family: Arial, sans-serif;
+/* Contenedor principal */
+.page-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', sans-serif;
 }
 
+/* Título */
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1f2937;
+}
+
+/* Inputs */
 .form-row {
   display: flex;
   gap: 12px;
-  align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 18px;
 
-  label { min-width: 90px; }
-  input[type="text"], input[type="file"], input {
-    padding: 6px 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    min-width: 240px;
+  input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.2s;
+
+    &:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
   }
 }
 
-.table-wrap {
-  margin-top: 18px;
+/* Botón principal */
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+
+  &:hover {
+    background: #1d4ed8;
+  }
+
+  &:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+  }
+}
+
+/* Tabla */
+.table-wrapper {
+  margin-top: 24px;
+  overflow: auto;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 8px;
+  font-size: 14px;
+
+  thead {
+    background: #f3f4f6;
+
+    th {
+      text-align: left;
+      padding: 10px;
+      font-weight: 600;
+      color: #374151;
+      border-bottom: 1px solid #e5e7eb;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #f9fafb;
+    }
+
+    td {
+      padding: 10px;
+      color: #374151;
+    }
+  }
 }
 
-table th, table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+/* Mensajes */
+.error {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
 }
 
-th {
-  background: #f5f5f5;
-  text-align: left;
+.info {
+  color: #065f46;
+  background: #d1fae5;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
 }
-
-.error { color: #a00; margin-top: 8px; }
-.info { color: #006; margin-top: 8px; }

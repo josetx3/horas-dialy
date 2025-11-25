@@ -56,6 +56,7 @@ export class MainComponent {
         this.info = 'No se encontraron registros compatibles en el archivo.';
       } else {
         this.info = `${this.parsed.length} registros importados correctamente.`;
+        this.sortParsedData();
         this.generateSummaryByUser();
       }
     };
@@ -72,19 +73,19 @@ export class MainComponent {
 
   exportExcel() {
     if (!this.parsed.length) return;
+    this.sortParsedData();
 
     // -----------------------------------
     // HOJA 1 → REGISTROS
     // -----------------------------------
-    const headers1 = ['Nombre', 'Fecha', 'Cliente', 'Proyecto', 'Codigo', 'Actividad', 'Total horas'];
+    const headers1 = ['Nombre', 'Fecha', 'Cliente', 'Proyecto', 'Actividad', 'Total horas'];
 
     const rows1 = this.parsed.map(p => ({
       Nombre: p.nombre,
       Fecha: p.fecha,
       Cliente: p.cliente,
       Proyecto: p.proyecto,
-      Codigo: p.codigo,
-      Actividad: p.actividad,
+      Actividad: `${p.codigo} ${p.actividad}`,
       "Total horas": p.horas
     }));
 
@@ -145,7 +146,29 @@ export class MainComponent {
     });
 
     this.summary = Array.from(summaryMap.values());
+    this.sortSummary();
   }
+
+  sortSummary() {
+    this.summary.sort((a, b) => {
+      const nameCompare = a.nombre.localeCompare(b.nombre);
+      if (nameCompare !== 0) return nameCompare;
+
+      return a.dia.localeCompare(b.dia);
+    });
+  }
+
+  sortParsedData() {
+    this.parsed.sort((a, b) => {
+      // 1. Ordenar primero por nombre (alfabético)
+      const nameCompare = a.nombre.localeCompare(b.nombre);
+      if (nameCompare !== 0) return nameCompare;
+
+      // 2. Luego por fecha (más antigua → más reciente)
+      return a.fecha.localeCompare(b.fecha);
+    });
+  }
+
 
 
 }
