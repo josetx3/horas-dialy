@@ -26,6 +26,8 @@ export class MainComponent {
   // UI state
   error = '';
   info = '';
+  // Por usuario | tiempo total
+  summary: { nombre: string, dia: string, tiempo: number }[] = [];
 
   constructor(private parser: MainService) {
   }
@@ -54,6 +56,7 @@ export class MainComponent {
         this.info = 'No se encontraron registros compatibles en el archivo.';
       } else {
         this.info = `${this.parsed.length} registros importados correctamente.`;
+        this.generateSummaryByUser();
       }
     };
     reader.onerror = () => {
@@ -69,9 +72,13 @@ export class MainComponent {
 
   exportExcel() {
     if (!this.parsed.length) return;
-    const headers = ['Nombre', 'Fecha', 'Cliente', 'Proyecto', 'Tipo', 'Codigo', 'Actividad', 'Total horas'];
-    // Construimos filas como objetos, no como strings → Excel los interpreta como celdas reales
-    const rows = this.parsed.map(p => ({
+
+    // -----------------------------------
+    // HOJA 1 → REGISTROS
+    // -----------------------------------
+    const headers1 = ['Nombre', 'Fecha', 'Cliente', 'Proyecto', 'Tipo', 'Codigo', 'Actividad', 'Total horas'];
+
+    const rows1 = this.parsed.map(p => ({
       Nombre: p.nombre,
       Fecha: p.fecha,
       Cliente: p.cliente,
@@ -82,29 +89,63 @@ export class MainComponent {
       "Total horas": p.horas
     }));
 
-    // Crear la hoja
-    const worksheet = XLSX.utils.json_to_sheet(rows, {header: headers});
+    const sheetRegistros = XLSX.utils.json_to_sheet(rows1, {header: headers1});
+    sheetRegistros['!cols'] = headers1.map(h => ({wch: Math.max(h.length, 15)}));
 
-    // Ajusta automáticamente el ancho de las columnas
-    const colWidths = headers.map(h => ({wch: Math.max(h.length, 15)}));
-    worksheet['!cols'] = colWidths;
+    // -----------------------------------
+    // HOJA 2 → RESUMEN POR USUARIO
+    // -----------------------------------
+    this.generateSummaryByUser();
 
-    // Crear workbook
+    const headers2 = ['Nombre', 'Día', 'Tiempo total'];
+
+    const rows2 = this.summary.map(s => ({
+      Nombre: s.nombre,
+      Día: s.dia,
+      "Tiempo total": s.tiempo
+    }));
+
+    const sheetResumen = XLSX.utils.json_to_sheet(rows2, {header: headers2});
+    sheetResumen['!cols'] = headers2.map(h => ({wch: Math.max(h.length, 15)}));
+
+    // -----------------------------------
+    // CREAR WORKBOOK CON DOS HOJAS
+    // -----------------------------------
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Registros');
 
-    // Exportar como archivo .xlsx real
+    XLSX.utils.book_append_sheet(workbook, sheetRegistros, 'Registros');
+    XLSX.utils.book_append_sheet(workbook, sheetResumen, 'Resumen por usuario');
+
+    // Exportar archivo real Excel
     const excelBuffer = XLSX.write(workbook, {bookType: 'xlsx', type: 'array'});
 
-    const fileName = `parsed_${this.lastFileName || 'export'}.xlsx`;
-    const blob = new Blob([excelBuffer], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+    const fileName = this.proyecto + `_${this.lastFileName || 'export'}.xlsx`;
+    const blob = new Blob(
+      [excelBuffer],
+      {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'}
+    );
 
     saveAs(blob, fileName);
   }
 
-  csvSafe(value: string) {
-    if (!value) return '';
-    return `"${value.replace(/"/g, '""')}"`;
+  generateSummaryByUser() {
+    const summaryMap = new Map<string, { nombre: string, dia: string, tiempo: number }>();
+
+    this.parsed.forEach(item => {
+      const key = `${item.nombre}-${item.fecha}`;
+
+      if (!summaryMap.has(key)) {
+        summaryMap.set(key, {
+          nombre: item.nombre,
+          dia: item.fecha,
+          tiempo: 0
+        });
+      }
+
+      summaryMap.get(key)!.tiempo += Number(item.horas);
+    });
+
+    this.summary = Array.from(summaryMap.values());
   }
 
 

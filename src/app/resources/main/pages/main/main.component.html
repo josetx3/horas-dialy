@@ -25,7 +25,7 @@
         <th>Fecha</th>
         <th>Cliente</th>
         <th>Proyecto</th>
-<!--        <th>Tipo</th>-->
+        <!--        <th>Tipo</th>-->
         <th>Código</th>
         <th>Actividad</th>
         <th>Total horas</th>
@@ -37,7 +37,7 @@
         <td>{{ p.fecha }}</td>
         <td>{{ p.cliente }}</td>
         <td>{{ p.proyecto }}</td>
-<!--        <td>{{ p.tipo }}</td>-->
+        <!--        <td>{{ p.tipo }}</td>-->
         <td>{{ p.codigo }}</td>
         <td>{{ p.actividad }}</td>
         <td style="text-align: right;">{{ p.horas }}</td>
@@ -51,4 +51,25 @@
       </tfoot>
     </table>
   </div>
+
+  <div *ngIf="parsed.length > 0" class="table-wrap">
+    <h2>Resumen por Usuario</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Día</th>
+        <th>Total Horas</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let s of summary">
+        <td>{{ s.nombre }}</td>
+        <td>{{ s.dia }}</td>
+        <td>{{ s.tiempo }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div>
